@@ -13,15 +13,76 @@
   </head>
   <body>
 	<div class="container">
-		<h1>Dinner planner</h1>
-		<div id="exampleView">
-			<div>
-				Number of guests: <span id="numberOfGuests"></span>
-			</div>
-			<div>
-          <button id="minusGuest" class="btn"><span class="glyphicon glyphicon-minus"></span></button>
-				<button id="plusGuest" class="btn"><span class="glyphicon glyphicon-plus"></span></button>
-			</div>
+		<div class="bg-light text-dark">
+			<center><h1><span class="align-middle">
+			Dinner Planner</span></h1></center>
+			<hr>
+		</div>
+		<div id="homeView">
+			<center>
+				<p>Lorem ipsum ....</p>
+				<button id="createNewDineer" class="btn btn-primary btn-lg ">Create new dinner</button>
+			</center>
+		</div>
+		<div class="row align-items-end">
+		    <div class="col-6 col-md-4">
+		      <div id="exampleView">
+		      	<h3>My Dinner</h3>
+				<div>
+					<p>People: <span id="numberOfGuests"></span>
+						<button id="minusGuest" class="btn"><span class="glyphicon glyphicon-minus"></span></button>
+						<button id="plusGuest" class="btn"><span class="glyphicon glyphicon-plus"></span></button>
+					</p>
+				</div>
+				<div id="menu">
+					<div class="bg-light text-dark row">
+						<div class="col">
+							<p class="text-left">Dish Name</p>
+						</div>
+						<div class="col">
+							<p class="text-right">Cost</p>
+						</div>
+					</div>
+				</div>
+				<div class="text-center">
+					<div id="currentMenu" class="table">
+						<!--div class="row">
+							<div class="col">
+								Dish Name
+							</div>
+							<div class="col">
+								Cost
+							</div>
+						</div-->
+					</div>
+					<p id="totalPrice" class="text-right">SEK 0.00</p>
+					<button id="confirmDinner" class="btn btn-secondary btn-lg btn-block">Confirm Dinner</button>
+				</div>
+		    <div class="col-12 col-md-8">
+		      <div>
+		      	<p class="text-left">FIND A DISH</p>
+		      	<div class="form-row align-items-center">
+		      		<div class="col-auto">
+		      			<label class="sr-only" for="inlineFormInput">EnterKeyWords</label>
+      					<input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Enter Key Words">
+		      		</div>
+		      		<div class="col-auto">
+			      		<div class="dropdown">
+						  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						    Dropdown button
+						  </button>
+						  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						    <!--a class="dropdown-item" href="#">Action</a-->
+						  </div>
+						</div>
+					</div>
+					<div class="col-auto">
+		      			<button id="search" class="btn btn-secondary btn-sm ">search</button>
+		      		</div>
+		      	</div>
+		      </div>
+		      <main></main>
+		    </div>
 		</div>
 	</div>
 

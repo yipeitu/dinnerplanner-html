@@ -34,7 +34,7 @@ var ExampleView = function (container, model) {
 	 * 
 	 */
 	var numberOfGuests = container.find("#numberOfGuests");
-
+	console.log(model)
 	/**
 	 * When we want references to some view elements to be available from outside of view, we 
 	 * define them as this.someName. We don't need this in Lab 1 yet, but in Lab 2 it 
@@ -48,11 +48,22 @@ var ExampleView = function (container, model) {
 	this.plusButton = container.find("#plusGuest");
 	this.minusButton = container.find("#minusGuest");
 	
+	this.plusButton.click(function(){
+		model.setNumberOfGuests(1);
+		updateNumberOfGuests(numberOfGuests, model)
+	});
+
+	this.minusButton.click(function(){
+		model.setNumberOfGuests(-1);
+		updateNumberOfGuests(numberOfGuests, model)
+	});
 	/**
 	 * Here we use @var {jQuery object} numberOfGuests that is a reference to <span>
 	 * in our view to dynamically set it's value to "Hello World".
 	 */
-	numberOfGuests.html("Hello World");
-	
+	updateNumberOfGuests(numberOfGuests, model)
 }
- 
+
+var updateNumberOfGuests = function(numberOfGuests, model){
+	numberOfGuests.html(model.getNumberOfGuests());
+}
