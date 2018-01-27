@@ -24,10 +24,9 @@
 				<button id="createNewDineer" class="btn btn-primary btn-lg ">Create new dinner</button>
 			</center>
 		</div>
-		<div class="row align-items-end">
-		    <div class="col-6 col-md-4">
-		      <div id="exampleView">
-		      	<h3>My Dinner</h3>
+		<div class="container row">
+		    <div class="col-6 col-md-4 bd-sidebar" id="exampleView">
+		      	<h2>My Dinner</h2>
 				<div>
 					<p>People: <span id="numberOfGuests"></span>
 						<button id="minusGuest" class="btn"><span class="glyphicon glyphicon-minus"></span></button>
@@ -58,30 +57,81 @@
 					<p id="totalPrice" class="text-right">SEK 0.00</p>
 					<button id="confirmDinner" class="btn btn-secondary btn-lg btn-block">Confirm Dinner</button>
 				</div>
-		    <div class="col-12 col-md-8">
-		      <div>
-		      	<p class="text-left">FIND A DISH</p>
-		      	<div class="form-row align-items-center">
-		      		<div class="col-auto">
-		      			<label class="sr-only" for="inlineFormInput">EnterKeyWords</label>
-      					<input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Enter Key Words">
-		      		</div>
-		      		<div class="col-auto">
-			      		<div class="dropdown">
-						  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						    Dropdown button
-						  </button>
-						  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						    <!--a class="dropdown-item" href="#">Action</a-->
-						  </div>
-						</div>
-					</div>
-					<div class="col-auto">
-		      			<button id="search" class="btn btn-secondary btn-sm ">search</button>
-		      		</div>
+			</div>
+		    <div class="col-12 col-md-8" id="selectDishView">
+		      <div class="container">
+		      	<div class="row">
+		      		<h2 class="col text-left align-middle">FIND A DISH</h2>
 		      	</div>
+		      	<div class="d-flex justify-content-around align-items-center">
+			      		<div class="col-auto">
+			      			<label class="sr-only" for="inlineFormInput">EnterKeyWords</label>
+	      					<input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Enter Key Words">
+			      		</div>
+			      		<div class="col-auto">
+				      		<div class="dropdown">
+							  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							    Dropdown button
+							  </button>
+							  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+							    <a class="dropdown-item" href="#">All</a>
+							  </div>
+							</div>
+						</div>
+						<div class="col-auto">
+			      			<button id="search" class="btn btn-secondary btn-md ">search</button>
+			      		</div>
+			    </div>
 		      </div>
-		      <main></main>
+		      <main>
+		      	<div class="container-fluid">
+		      		<figure class="figure">
+					  <img src="images/bakedbrie.jpg" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+					  <figcaption class="figure-caption text-center">A caption for the above image.</figcaption>
+					</figure>
+					
+					<figure class="figure">
+					  <img src="images/bakedbrie.jpg" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+					  <figcaption class="figure-caption text-center">A caption for the above image.</figcaption>
+					</figure>
+
+		      	</div>
+		      </main>
+		    </div>
+		    <div class="col-12 col-md-8" id="dishDetailsView">
+		    	<div class="row align-items-start justify-content-start">
+		    		<div class="container" id="dishDescriptionView">
+		    			<figure class="figure">
+		    			  <h3>Dish Name</h3>
+						  <img src="images/bakedbrie.jpg" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+						  <figcaption class="figure-caption text-center">Dish Description</figcaption>
+						  <button id="backToSearch" class="btn btn-primary btn-lg ">back to search</button>
+						</figure>
+		    		</div>
+		    		<div class="container" id="ingredientsView">
+		    			<div class="row align-items-start justify-content-start">
+		    				INGREDIENTS FOR 3 PEOPLE
+		    			</div>
+		    			<div class="row align-items-center justify-content-center">
+		    				<div class="col">
+		    					<div class="row">
+		    						<div class="col text-left">
+		    							Number and units
+		    						</div>
+		    						<div class="col text-center">
+		    							Ingredients
+		    						</div>
+		    						<div class="col text-right">
+		    							Price
+		    						</div>
+		    					</div>
+		    				</div>
+		    			</div>
+		    			<div class="row align-items-end justify-content-center">
+		    				<button id="addToMenu" class="btn btn-primary btn-lg ">add to menu</button>
+		    			</div>
+		    		</div>
+		    	</div>
 		    </div>
 		</div>
 	</div>
