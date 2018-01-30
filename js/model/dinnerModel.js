@@ -121,7 +121,14 @@ var DinnerModel = function() {
 		}
 	}
 
-
+	//get all types of dishes
+	this.getAllDishTypes = function(){
+		return dishes.map(function(i){ 
+			return i.type
+		}).filter(function(item, pos, self){ 
+			return self.indexOf(item) == pos
+		});
+	}
 	// the dishes variable contains an array of all the 
 	// dishes in the database. each dish has id, name, type,
 	// image (name of the image file), description and

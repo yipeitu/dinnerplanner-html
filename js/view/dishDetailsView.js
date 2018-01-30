@@ -12,7 +12,7 @@
  * @param {jQuery object} container - references the HTML parent element that contains the view.
  * @param {Object} model - the reference to the Dinner Model
  */ 
-var ExampleView = function (container, model) {
+var DishDetailsView = function (container, model, id, numberOfGuests) {
 	
 	/**
 	 * We use the @method find() on @var {jQuery object} container to look for various elements 
@@ -33,37 +33,57 @@ var ExampleView = function (container, model) {
 	 * in some other view gives the same ID to another element.
 	 * 
 	 */
-	var numberOfGuests = container.find("#numberOfGuests");
 	
-	/**
-	 * When we want references to some view elements to be available from outside of view, we 
-	 * define them as this.someName. We don't need this in Lab 1 yet, but in Lab 2 it 
-	 * will be important for assigning listeners to these buttons, because the listeners
-	 * should not be assigned in the view, but rather in controller.
-	 * 
-	 * We can then, in some other code, use exampleView.plusButton to reference the 
-	 * this button and do something with it (see Lab 2).
-	 * 
-	 */
-	this.plusButton = container.find("#plusGuest");
-	this.minusButton = container.find("#minusGuest");
-	
-	this.plusButton.click(function(){
-		model.setNumberOfGuests(1);
-		updateNumberOfGuests(numberOfGuests, model)
-	});
+	if(container.length !== 0){
+		// dish image and description
+		var dish = model.getDish(id);
+		
+		var dishName = container.find("#dishNameView");
+		
+		dishName.html(dish.name);
 
-	this.minusButton.click(function(){
-		model.setNumberOfGuests(-1);
-		updateNumberOfGuests(numberOfGuests, model)
-	});
-	/**
-	 * Here we use @var {jQuery object} numberOfGuests that is a reference to <span>
-	 * in our view to dynamically set it's value to "Hello World".
-	 */
-	updateNumberOfGuests(numberOfGuests, model)
+		var dishImg = container.find("#dishImgView");
+
+		dishImg.append(dishTag(id, dish.image, dish.description));
+
+		// ingredients
+		var ingredientTable = container.find("#ingredientTableView");
+
+		var totalPrice = 0;
+
+		dish.ingredients.forEach(function(ingredient){
+			totalPrice += (numberOfGuests * ingredient.price);
+			ingredientTable.append(ingredientView(numberOfGuests, ingredient.quantity,
+				ingredient.unit, ingredient.name, ingredient.price))
+		})
+
+		// update totalPrice
+		var ingredientsPriceView = container.find("#ingredientsPriceView");
+		ingredientsPriceView.html(totalPrice.toFixed(2));
+	} 
 }
 
-var updateNumberOfGuests = function(numberOfGuests, model){
-	numberOfGuests.html(model.getNumberOfGuests());
+var dishTag = function(id, img, descrption){
+	return '<figure class="figure">' +
+				'<img src="images/' + 
+				img + 
+				'" class="figure-img img-fluid img-thumbnail m-2">' +
+				'<figcaption class="figure-caption text-center">' + 
+				descrption +
+				'</figcaption></figure>';
+}
+
+var ingredientView = function(numberOfGuests, number, unit, ingredient, price){
+	
+	return '<div class="row m-1">' + 
+		'<div class="col-4 text-left">' +
+			numberOfGuests * number + 
+			" " +
+			unit +
+		'</div>' +
+		'<div class="col-5 text-left">' + 
+			ingredient +
+		'</div><div class="col-1 text-center">SEK</div><div class="col-2 text-right">' +
+			(numberOfGuests * price).toFixed(2) +
+		'</div></div>';
 }
