@@ -1,89 +1,147 @@
-/** ExampleView Object constructor
- * 
- * This object represents the code for one specific view (in this case the Example view). 
- * 
- * It is responsible for:
- * - constructing the view (e.g. if you need to create some HTML elements procedurally) 
- * - populating the view with the data
- * - updating the view when the data changes
- * 
- * You should create a view Object like this for every view in your UI.
- * 
- * @param {jQuery object} container - references the HTML parent element that contains the view.
- * @param {Object} model - the reference to the Dinner Model
- */ 
-var DishDetailsView = function (container, model, id, numberOfGuests) {
+var DishDetailsView = function (pView, pModel) {
 	
-	/**
-	 * We use the @method find() on @var {jQuery object} container to look for various elements 
-	 * inside the view in orther to use them later on. For instance:
-	 * 
-	 * @var {jQuery object} numberOfGuests is a reference to the <span> element that 
-	 * represents the placeholder for where we want to show the number of guests. It's
-	 * a reference to HTML element (wrapped in jQuery object for added benefit of jQuery methods)
-	 * and we can use it to modify <span>, for example to populate it with dynamic data (for now 
-	 * only 'Hello world', but you should change this by end of Lab 1).
-	 * 
-	 * We use variables when we want to make the reference private (only available within) the
-	 * ExampleView.
-	 * 
-	 * IMPORTANT: Never use $('someSelector') directly in the views. Always use container.find
-	 * or some other way of searching only among the containers child elements. In this way you
-	 * make your view code modular and ensure it dosn't break if by mistake somebody else
-	 * in some other view gives the same ID to another element.
-	 * 
-	 */
-	
-	if(container.length !== 0){
-		// dish image and description
-		var dish = model.getDish(id);
+	var dishImgData = function(dish){
+		return`<figure class="figure">
+				<img src="images/${dish.image}" class="figure-img img-fluid img-thumbnail m-2">
+				<figcaption class="figure-caption text-center">${dish.description}</figcaption></figure>`;
+	}
+
+	var ingredientView = function(numberOfGuests, number, unit, ingredient, price){
+		return `<div class="row m-1">
+		<div class="col-4 text-left">
+			${(numberOfGuests * number).toFixed(2)} unit
+		</div>
+		<div class="col-5 text-left"> 
+			${ingredient}
+		</div>
+		<div class="col-1 text-center">SEK</div><div class="col-2 text-right">
+			${(numberOfGuests * price).toFixed(2)}
+		</div></div>`;
+	}
+
+	var numberOfGuestsUpdate = function(number){
+		var numberOfGuestsView = pView.find("#iNumberOfGuests");
+		numberOfGuestsView[0].innerHTML = "INGREDIENTS FOR "+ number + " PEOPLE";
+	}
+
+	this.ctrlInitialize = function(){
+		var btnBack = pView.find('#iBtnBackToSearch');
+		btnBack.on('click', ctrlBackToSearch);
+
+		var btnAdd = pView.find('#iAddToMenu');
+		btnAdd.on('click', ctrlAddToMenu.bind(this));
 		
-		var dishName = container.find("#dishNameView");
+	}
+
+	var ctrlBackToSearch = function(event){
+		pModel.notifyObservers("backToSearch", pView);
+	}
+
+	var ctrlAddToMenu = function(event){
+		console.log("here");
+		pModel.addDishToMenu(this.dish.id);
+		pModel.notifyObservers("addToMenu", pView);
+	}
+
+	this.update = function(){
+		var dishView = pView.find("#iDishName");
+		var dishImg = pView.find("#iDishImg");
+		this.dish = pModel.getDish(pModel.getDishId());
+
+		dishView[0].innerHTML = this.dish.name;
+		dishImg[0].innerHTML = dishImgData(this.dish);
+
+		var ingredientTable = pView.find("#iIngredientTable");
+
+		var numberOfGuests = pModel.getNumberOfGuests();
+		if(numberOfGuests == 0) numberOfGuests = 1;
+		numberOfGuestsUpdate(numberOfGuests);
 		
-		dishName.html(dish.name);
-
-		var dishImg = container.find("#dishImgView");
-
-		dishImg.append(dishTag(id, dish.image, dish.description));
-
-		// ingredients
-		var ingredientTable = container.find("#ingredientTableView");
-
-		var totalPrice = 0;
-
-		dish.ingredients.forEach(function(ingredient){
-			totalPrice += (numberOfGuests * ingredient.price);
+		var pTotalPrice = 0;
+		this.dish.ingredients.forEach(function(ingredient){
+			pTotalPrice += (numberOfGuests * ingredient.price);
 			ingredientTable.append(ingredientView(numberOfGuests, ingredient.quantity,
-				ingredient.unit, ingredient.name, ingredient.price))
+			ingredient.unit, ingredient.name, ingredient.price))
 		})
 
-		// update totalPrice
-		var ingredientsPriceView = container.find("#ingredientsPriceView");
-		ingredientsPriceView.html(totalPrice.toFixed(2));
-	} 
+		var ingredientsPrice = pView.find("#iIngredientsPrice");
+		ingredientsPrice.html(pTotalPrice.toFixed(2));
+	}
+
+	this.clear = function(){
+		pView.empty();
+	}
+
+	this.show = function(){
+		pView[0].innerHTML = `<div class="container-fluid">
+			     	<div class="row">
+			     	<div class="col">
+			     		<div class="row m-1" id="iDishName">
+
+			     		</div>
+			     		<div class="row m-1" id="iDishImg">
+			     			
+			     		</div>
+			     		<div class="row m-1">
+			     			<button id="iBtnBackToSearch" class="btn btn-warning btn-lg btn-array-left">back to search</button>
+			     		</div>
+			     	</div>
+			     	<div class="col border border-dark m-1" style="background-color: yellow">
+			     		<div class="row m-1" id="iNumberOfGuests">
+			     			INGREDIENTS FOR 1 PERSON
+			     		</div>
+			     		<hr style="width: 100%; height: 1px; background-color:black;" />
+			     		<div id="iIngredientTable">
+			     		</div>
+			     		<hr style="width: 100%; height: 1px; background-color:black;" />
+			     		<div class="row m-1">
+			     			<div class="col-9 text-left">
+		    					<button id="iAddToMenu" class="btn btn-warning btn-lg">add to menu</button>
+		    				</div>
+		    				<div class="col-1 text-center">
+		    					SEK
+		    				</div>
+		    				<div class="col-2 text-right" id="iIngredientsPrice">
+		    					0.00
+		    				</div>
+			     		</div>
+			     	</div>
+			     	</div>
+			     	<div class="col-12">
+			     		<h1>PREPARATION</h1>
+			     	</div>
+			     </div>`;
+		this.update();
+		this.ctrlInitialize();
+	}
+	// if(container.length !== 0){
+	// 	// dish image and description
+	// 	var dish = model.getDish(id);
+		
+	// 	var dishName = container.find("#dishNameView");
+		
+	// 	dishName.html(dish.name);
+
+	// 	var dishImg = container.find("#dishImgView");
+
+	// 	dishImg.append(dishTag(id, dish.image, dish.description));
+
+	// 	// ingredients
+	// 	var ingredientTable = container.find("#ingredientTableView");
+
+	// 	var totalPrice = 0;
+
+	// 	dish.ingredients.forEach(function(ingredient){
+	// 		totalPrice += (numberOfGuests * ingredient.price);
+	// 		ingredientTable.append(ingredientView(numberOfGuests, ingredient.quantity,
+	// 			ingredient.unit, ingredient.name, ingredient.price))
+	// 	})
+
+	// 	// update totalPrice
+	// 	var ingredientsPriceView = container.find("#ingredientsPriceView");
+	// 	ingredientsPriceView.html(totalPrice.toFixed(2));
+	// } 
 }
 
-var dishTag = function(id, img, descrption){
-	return '<figure class="figure">' +
-				'<img src="images/' + 
-				img + 
-				'" class="figure-img img-fluid img-thumbnail m-2">' +
-				'<figcaption class="figure-caption text-center">' + 
-				descrption +
-				'</figcaption></figure>';
-}
 
-var ingredientView = function(numberOfGuests, number, unit, ingredient, price){
-	
-	return '<div class="row m-1">' + 
-		'<div class="col-4 text-left">' +
-			numberOfGuests * number + 
-			" " +
-			unit +
-		'</div>' +
-		'<div class="col-5 text-left">' + 
-			ingredient +
-		'</div><div class="col-1 text-center">SEK</div><div class="col-2 text-right">' +
-			(numberOfGuests * price).toFixed(2) +
-		'</div></div>';
-}
+

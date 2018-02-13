@@ -12,8 +12,25 @@
  * @param {jQuery object} container - references the HTML parent element that contains the view.
  * @param {Object} model - the reference to the Dinner Model
  */ 
+
+//ExampleViewController Object constructor
+var ExampleViewController = function(view, model) {
+
+ view.plusButton.click(function(){
+ model.setNumberOfGuests(model.getNumberOfGuests() + 1);
+ });
+
+ view.minusButton.click(function(){
+ model.setNumberOfGuests(model.getNumberOfGuests() - 1);
+ });
+}
+
 var ExampleView = function (container, model) {
-	
+	this.update=function(model, changeDetails){
+	     // redraw just the portion affected by the changeDetails
+	     // or remove all graphics in the view, read the whole model and redraw 
+	} 
+	model.addObserver(update);
 	/**
 	 * We use the @method find() on @var {jQuery object} container to look for various elements 
 	 * inside the view in orther to use them later on. For instance:

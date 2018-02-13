@@ -1,24 +1,83 @@
 //DinnerModel Object constructor
 var DinnerModel = function() {
  
-	//TODO Lab 1 implement the data structure that will hold number of guest
+	// observers
+	var pObservers = Object();
+	// stateController
+	var pStateCtrl = null;
 	// and selected dishes for the dinner menu
-	var numberOfGuests = 0;
+	var pNumberOfGuests = 0;
+	// click image and check dish detail
+	var pDishId = 1;
+
 	// dish id map
 	var mapDishesId = [];
 	// record the index number in dishes
 	var selecteIds = [];
 	// record the current menu
 	var unSelectedIds = [];
+	// dish detail id
+
+	this.setStateCtrl = function(stateCtrl){
+		pStateCtrl = stateCtrl;
+		console.log(pStateCtrl);
+	}
+
+	this.addObserver = function(obsName, observer) {
+		// observer is a function from a view
+		pObservers[obsName] = observer;
+		console.log("addObserver:", obsName);
+	}
+
+	this.notifyObservers = function(obsName, observer) { 
+		console.log(obsName);
+		switch(obsName){
+			case "selectDish":
+				pObservers["homeView"].clear();
+				pObservers["sideBarView"].show();
+				pObservers["selectDishView"].show();
+				break;
+			case "dinnerConfirm":
+				// pStateCtrl.changeState(obsName);
+				pObservers["sideBarView"].clear();
+				pObservers["selectDishView"].clear();
+				pObservers["dinnerOverView"].show();
+				break;
+			case "dishDetails":
+				// pStateCtrl.changeState(obsName);
+				pObservers["selectDishView"].clear();
+				pObservers["dishDetailsView"].show();
+				break;
+			case "backToSearch":
+				pObservers["dishDetailsView"].clear();
+				pObservers["sideBarView"].show();
+				pObservers["selectDishView"].show();
+				break;
+			case "addToMenu":
+				pObservers["sideBarView"].show();
+			case "numberOfGuests":
+				pObservers["dishDetailsView"].show();
+		}
+	}
+
+	// get current price
+	this.getDishPrice = function(dish) {
+		var totalPrice = 0;
+		var tempNumberOfGuests = pNumberOfGuests;
+		if(tempNumberOfGuests === 0) tempNumberOfGuests = 1;
+		dish.ingredients.forEach(function(ingredient){
+			totalPrice += (tempNumberOfGuests * ingredient.price )
+		})
+		return totalPrice;
+	}
 
 	this.setNumberOfGuests = function(num) {
-		if(numberOfGuests === 0 && num === -1) return;
-		numberOfGuests += num;
-		console.log(numberOfGuests)
+		if(pNumberOfGuests === 0 && num === -1) return;
+		pNumberOfGuests = num;
 	}
 	
 	this.getNumberOfGuests = function() {
-		return numberOfGuests;
+		return pNumberOfGuests;
 	}
 
 	//Returns the dish that is on the menu for selected type 
@@ -39,8 +98,25 @@ var DinnerModel = function() {
 		mapDishesId.length = 0;
 		return dishes.map(function(dish){ 
 			mapDishesId.push(dish.id);
-			return [dish.id, dish.name, dish.image]
+			return dish;
 		});
+	}
+
+
+	//function that returns a dish of specific ID
+	this.getDish = function (id) {
+	  for(key in dishes){
+			if(dishes[key].id == id) {
+				return dishes[key];
+			}
+		}
+	}
+
+	this.getCurrentDishes = function(){
+		return selecteIds.map(function(id){
+			var dish = this.getDish(id);
+			return [dish.name, this.getDishPrice(dish)];
+		}, this);
 	}
 
 	//Returns all ingredients for all the dishes on the menu.
@@ -56,15 +132,13 @@ var DinnerModel = function() {
 		var mapIndex = -1;
 		selecteIds.forEach(function(id){
 			// can not find the id
-			if(mapDishesId.valueOf(id) === -1){
+			if(mapDishesId.indexOf(id) === -1){
 				console.log("Warning");
-				continue;
+				return false;
 			}
-			dishes[index].ingredients.forEach(function(ingredient){ 
-				totalPrice += (numberOfGuests * ingredient.price )
-			})
-		})
-		return totalPrice
+			totatlPrice = this.getDishPrice(this.getDish(id));
+		}, this);
+		return totalPrice;
 	}
 
 	//Adds the passed dish to the menu. If the dish of that type already exists on the menu
@@ -93,7 +167,7 @@ var DinnerModel = function() {
 	//function that returns all dishes of specific type (i.e. "starter", "main dish" or "dessert")
 	//you can use the filter argument to filter out the dish by name or ingredient (use for search)
 	//if you don't pass any filter all the dishes will be returned
-	this.getAllDishes = function (type,filter) {
+	this.getAllDishes = function (type, filter) {
 	  return dishes.filter(function(dish) {
 		var found = true;
 		if(filter){
@@ -112,15 +186,6 @@ var DinnerModel = function() {
 	  });	
 	}
 
-	//function that returns a dish of specific ID
-	this.getDish = function (id) {
-	  for(key in dishes){
-			if(dishes[key].id == id) {
-				return dishes[key];
-			}
-		}
-	}
-
 	//get all types of dishes
 	this.getAllDishTypes = function(){
 		return dishes.map(function(i){ 
@@ -128,6 +193,19 @@ var DinnerModel = function() {
 		}).filter(function(item, pos, self){ 
 			return self.indexOf(item) == pos
 		});
+	}
+
+	// set dish id for dishDetailView, pass from selectDishView
+	this.setDishId = function(dishId){
+		if(mapDishesId.indexOf(parseInt(dishId)) === -1){
+			return false;
+		}
+		pDishId = dishId;
+		return true;
+	}
+
+	this.getDishId = function(){
+		return pDishId;
 	}
 	// the dishes variable contains an array of all the 
 	// dishes in the database. each dish has id, name, type,
