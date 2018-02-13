@@ -1,11 +1,11 @@
 var SideBarView = function (pView, pModel) {
 
 	this.ctrlInitialize = function(){
-		var btnGuest = pView.find('#iBtnGuest');
-		btnGuest.on('click', ctrlGuestView.bind(this));
+		var btnGuest = pView.find('#iBtnGuest:not(.bound)');
+		btnGuest.addClass('bound').on('click', ctrlGuestView.bind(this));
 
-		var btnConfirm = pView.find("#iBtnConfirm");
-		btnConfirm.on("click", ctrlConfirm.bind(this));
+		var btnConfirm = pView.find("#iBtnConfirm:not(.bound)");
+		btnConfirm.addClass('bound').on("click", ctrlConfirm.bind(this));
 		// btnCreate.addEventListener('click', this.ctrlCreateNewDinner);
 		// this.penguinView.onClickGetPenguin = this.onClickGetPenguin.bind(this);
 	}
@@ -22,7 +22,6 @@ var SideBarView = function (pView, pModel) {
 		var numberOfGuests = pView.find("#numberOfGuests");
 		numberOfGuests.html(pModel.getNumberOfGuests());
 		pModel.notifyObservers("numberOfGuests", pView);
-		this.update();
 	};
 
 	var ctrlConfirm = function(event) {
@@ -49,8 +48,8 @@ var SideBarView = function (pView, pModel) {
 	}
 
 	this.show = function(){
-		pView.innerHTML = `<div class="col-12 col-md-3 col-xl-2 py-md-3 bd-sidebar" id="iSideBarView">
-		      	<!-- side bar -->
+		console.log(pView);
+		pView[0].innerHTML = `
 		      	<div class="container align-items-center">
 		      		<div class="row">
 		      			<span class="align-middle text-left h2">My Dinner</span>
@@ -68,23 +67,26 @@ var SideBarView = function (pView, pModel) {
 		      	<!-- dinner overview panel-->
 				<nav class="collapse.show text-center">
 					<div class="row bg-light text-dark border" id="iOrderDishes">
-						<div class="col text-left m-1">
-							Dish Name
-						</div>
-						<div class="col text-right m-1">
-							Cost
-						</div>
+						
 					</div>
 				</nav>
-				<p class="text-right mt-2">SEK <span id="iTotalPrice">SEK 0.00</span></p>
-					<button id="iBtnConfirm" class="btn btn-secondary btn-lg btn-block mt-2">Confirm Dinner</button>
-			</div>`;
+				<p class="text-right mt-2" id="iTotalPrice">SEK 0.00</p>
+				<button id="iBtnConfirm" class="btn btn-secondary btn-lg btn-block mt-2">Confirm Dinner</button>
+			`;
 		this.update();
 		this.ctrlInitialize();
 	}
 	
 	this.update = function(){
 		var orderDishes = pView.find("#iOrderDishes");
+		
+		orderDishes.empty();
+		orderDishes.append(`<div class="col text-left m-1">
+							Dish Name
+						</div>
+						<div class="col text-right m-1">
+							Cost
+						</div>`)
 		var currentDishes = pModel.getCurrentDishes();
 		if( typeof currentDishes !== "undefined"){
 			currentDishes.forEach(function(dish){
@@ -92,7 +94,8 @@ var SideBarView = function (pView, pModel) {
 			})
 		}
 		var totalPrice = pView.find("#iTotalPrice");
-		totalPrice.innerHTML = "SEK " + pModel.getTotalMenuPrice();
+		
+		totalPrice[0].innerHTML = "SEK " + pModel.getTotalMenuPrice();
 	}
 	// var numberOfGuests = container.find("#numberOfGuests");
 	// numberOfGuests.html(3); 

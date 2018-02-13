@@ -25,11 +25,12 @@ var DishDetailsView = function (pView, pModel) {
 	}
 
 	this.ctrlInitialize = function(){
-		var btnBack = pView.find('#iBtnBackToSearch');
-		btnBack.on('click', ctrlBackToSearch);
+		
+		var btnBack = pView.find('#iBtnBackToSearch:not(.bound)');
+		btnBack.addClass('bound').on('click', ctrlBackToSearch);
 
-		var btnAdd = pView.find('#iAddToMenu');
-		btnAdd.on('click', ctrlAddToMenu.bind(this));
+		var btnAdd = pView.find('#iAddToMenu:not(.bound)');
+		btnAdd.addClass('bound').on('click', ctrlAddToMenu.bind(this));
 		
 	}
 
@@ -38,7 +39,6 @@ var DishDetailsView = function (pView, pModel) {
 	}
 
 	var ctrlAddToMenu = function(event){
-		console.log("here");
 		pModel.addDishToMenu(this.dish.id);
 		pModel.notifyObservers("addToMenu", pView);
 	}
@@ -114,33 +114,6 @@ var DishDetailsView = function (pView, pModel) {
 		this.update();
 		this.ctrlInitialize();
 	}
-	// if(container.length !== 0){
-	// 	// dish image and description
-	// 	var dish = model.getDish(id);
-		
-	// 	var dishName = container.find("#dishNameView");
-		
-	// 	dishName.html(dish.name);
-
-	// 	var dishImg = container.find("#dishImgView");
-
-	// 	dishImg.append(dishTag(id, dish.image, dish.description));
-
-	// 	// ingredients
-	// 	var ingredientTable = container.find("#ingredientTableView");
-
-	// 	var totalPrice = 0;
-
-	// 	dish.ingredients.forEach(function(ingredient){
-	// 		totalPrice += (numberOfGuests * ingredient.price);
-	// 		ingredientTable.append(ingredientView(numberOfGuests, ingredient.quantity,
-	// 			ingredient.unit, ingredient.name, ingredient.price))
-	// 	})
-
-	// 	// update totalPrice
-	// 	var ingredientsPriceView = container.find("#ingredientsPriceView");
-	// 	ingredientsPriceView.html(totalPrice.toFixed(2));
-	// } 
 }
 
 

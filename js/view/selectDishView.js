@@ -30,22 +30,22 @@ var SelectDishView = function (pView, pModel) {
 		if(pSearchType != "all" && keyWord.length == 0){
 			dishes = pModel.getSelectedDish(pSearchType);
 		}
-		else if(keyWord.length == 0 && keyWord == "all"){
+		else if(keyWord.length == 0 && pSearchType == "all"){
 			dishes = pModel.getFullMenu();
 		}
-		appendDishImage(dishes);
+		appendDishImage(imageMenu, dishes);
 	}
 
 	
 	var ctrlInitialize = function(){
-		var menuDropDown = pView.find('#iMenuDropDown');
-		menuDropDown.on("click", ctrlDropDown);
+		var menuDropDown = pView.find('#iMenuDropDown:not(.bound)');
+		menuDropDown.addClass('bound').on("click", ctrlDropDown);
 
-		var btnSearch = pView.find("#iBtnSearch");
-		btnSearch.on("click", ctrlSearch);
+		var btnSearch = pView.find("#iBtnSearch:not(.bound)");
+		btnSearch.addClass('bound').on("click", ctrlSearch);
 
-		var imageMenu = pView.find("#iImageMenu");
-		imageMenu.on("click", ctrlImage);
+		var imageMenu = pView.find("#iImageMenu:not(.bound)");
+		imageMenu.addClass('bound').on("click", ctrlImage);
 	}
 
 	var ctrlDropDown = function(event){

@@ -1,16 +1,12 @@
 var DinnerOverView = function (pView, pModel) {
-	
-	
+
 	this.ctrlInitialize = function(){
-		var btnCreate = pView.find('#iCreateNewDinner');
-		btnCreate.on('click', ctrlCreateNewDinner.bind(this));
-		// btnCreate.addEventListener('click', this.ctrlCreateNewDinner);
-		// this.penguinView.onClickGetPenguin = this.onClickGetPenguin.bind(this);
+		var btnCreate = pView.find('#iResultPrintout');
+		btnCreate.on('click', ctrlPrintout.bind(this));
 	}
 
-	var ctrlCreateNewDinner = function(event){
-		this.clear();
-		pModel.notifyObservers("homeView", pView);
+	var ctrlPrintout = function(){
+		pModel.notifyObservers("printOut", pView);
 	}
 
 	this.clear = function(){
@@ -18,14 +14,31 @@ var DinnerOverView = function (pView, pModel) {
 	}
 
 	this.show = function(){
-		pView.innerHTML = `<div class="d-none d-sm-block p-5"></div>
-			<div class="text-center">
-				<p class="mt-5 mb-5 ml-1 mr-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-			</div>
-			<div class="d-none d-sm-block p-5"></div>
-			<div class="text-center">
-				<button id="iCreateNewDinner" class="btn btn-warning btn-lg">Create new dinner</button>
-			</div>`;
+		pView[0].innerHTML = `<div class="col-10" id="iResultImage">
+			            
+			        </div>
+			        <div class="col-2 text-left border-left border-dark">
+			            <p>Total:</p>
+			            <p>${pModel.getTotalMenuPrice() + " SEK"}</p>
+			        </div>
+			        <hr style="width: 100%; height: 1px; background-color:black;" />
+
+					<div class="row">
+				        <div class="col text-center">
+							<button id="iResultPrintout" class="btn btn-warning btn-lg ">Print Full Receipe</button>
+				        </div>
+					</div>`;
+		var imageResult = pView.find("#iResultImage");
+		var currentDishes = pModel.getCurrentDishes();
+		if( typeof currentDishes !== "undefined"){
+			currentDishes.forEach(function(dish){
+				imageResult.append(`<figure class="figure m-lg-3">
+			              <img src="images/${dish[2]}" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+			              <figcaption class="figure-caption text-center">${dish[0]}</figcaption>
+			              <p class="text-right">${dish[1].toFixed(2)+" SEK"}</p>
+			            </figure>`);
+			})
+		}
 	}
 }
 

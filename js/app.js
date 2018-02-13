@@ -2,8 +2,11 @@ $(function() {
 	//We instantiate our model
 	var model = new DinnerModel();
 
-	var homeView = new HomeView($("#iHomeView"), model);
+	var homeView = new HomeView($("#iHome"), model);
 	model.addObserver("homeView", homeView);
+
+	var pageView = new PageView($("#iPage"));
+	model.addObserver("pageView", pageView);
 
 	var sideBarView = new SideBarView($("#iSideBarView"), model);
 	model.addObserver("sideBarView", sideBarView);
@@ -13,6 +16,18 @@ $(function() {
 
 	var dishDetailsView = new DishDetailsView($("#iMainView"), model);
 	model.addObserver("dishDetailsView", dishDetailsView);
+
+	var resultView = new ResultView($("#iResult"), model);
+	model.addObserver("resultView", resultView);
+
+	var statusView = new StatusView($("#iStatusView"), model);
+	model.addObserver("statusView", statusView);
+
+	var overView = new DinnerOverView($("#iOverView"), model);
+	model.addObserver("overView", overView);
+
+	// var receipeView = new ReceipeView($("iOverView"), model);
+	// model.addObserver("receipeView", receipeView);
 
 	// initalize general state controller
 	var stateCtrl = new GeneralStateController(homeView);
@@ -70,11 +85,10 @@ var GeneralStateController = function(view){
 		// pViews[this.pState].hide();
 		// pViews[pState].show();
 		pState = state;
-		console.log(pState+" -> "+state);
 	}
 
 	// get currentState
-	this.currentState = function(){
+	this.getState = function(){
 		return this.pState;
 	}
 }

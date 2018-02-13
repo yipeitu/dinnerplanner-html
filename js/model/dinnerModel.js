@@ -10,6 +10,7 @@ var DinnerModel = function() {
 	// click image and check dish detail
 	var pDishId = 1;
 
+	var pState = "homeView";
 	// dish id map
 	var mapDishesId = [];
 	// record the index number in dishes
@@ -20,7 +21,6 @@ var DinnerModel = function() {
 
 	this.setStateCtrl = function(stateCtrl){
 		pStateCtrl = stateCtrl;
-		console.log(pStateCtrl);
 	}
 
 	this.addObserver = function(obsName, observer) {
@@ -33,30 +33,60 @@ var DinnerModel = function() {
 		console.log(obsName);
 		switch(obsName){
 			case "selectDish":
+				// pStateCtrl.changeState(obsName);
+				pState = obsName;
 				pObservers["homeView"].clear();
+				pObservers["pageView"].show();
 				pObservers["sideBarView"].show();
 				pObservers["selectDishView"].show();
 				break;
 			case "dinnerConfirm":
-				// pStateCtrl.changeState(obsName);
+				// pStateCtrl.changeState("overView");
+				pState = "overView";
 				pObservers["sideBarView"].clear();
 				pObservers["selectDishView"].clear();
-				pObservers["dinnerOverView"].show();
+				pObservers["resultView"].show();
+				pObservers["statusView"].show();
+				pObservers["overView"].show();
 				break;
 			case "dishDetails":
-				// pStateCtrl.changeState(obsName);
+				// pStateCtrl.changeState("dishDetails");
+				pState = "dishDetails";
 				pObservers["selectDishView"].clear();
 				pObservers["dishDetailsView"].show();
 				break;
 			case "backToSearch":
-				pObservers["dishDetailsView"].clear();
+				console.log("State:", pState);
+				switch(pState){
+					case "dishDetails":
+						pObservers["dishDetailsView"].clear();
+						break;
+					case "overView":
+						pObservers["resultView"].clear();
+						pObservers["statusView"].clear();
+						pObservers["overView"].clear();
+						break;
+				}
+				// pStateCtrl.changeState("selectDish");
+				pState = "selectDish";
+				pObservers["pageView"].show();
 				pObservers["sideBarView"].show();
 				pObservers["selectDishView"].show();
 				break;
 			case "addToMenu":
 				pObservers["sideBarView"].show();
+				break;
 			case "numberOfGuests":
-				pObservers["dishDetailsView"].show();
+				pObservers["sideBarView"].update();
+				if(pState == "dishDetails"){
+					pObservers["dishDetailsView"].show();
+				}
+				break;
+			case "printOut":
+				// pStateCtrl.changeState("receipeView");
+				pState = "receipeView";
+				pObservers["overView"].clear();
+				pObservers["receipeView"].show();
 		}
 	}
 
@@ -72,7 +102,7 @@ var DinnerModel = function() {
 	}
 
 	this.setNumberOfGuests = function(num) {
-		if(pNumberOfGuests === 0 && num === -1) return;
+		if(num <= 0) return;
 		pNumberOfGuests = num;
 	}
 	
@@ -85,8 +115,8 @@ var DinnerModel = function() {
 		//TODO Lab 1
 		var typeDishes = [];
 		dishes.forEach(function(dish){
-			if(dish.type === type) typeDishes.push([dish.id, dish.name, dish.image]);
-			else continue;
+			if(dish.type === type) typeDishes.push(dish);
+			else return false;
 		})
 		return typeDishes;
 	}
@@ -115,7 +145,7 @@ var DinnerModel = function() {
 	this.getCurrentDishes = function(){
 		return selecteIds.map(function(id){
 			var dish = this.getDish(id);
-			return [dish.name, this.getDishPrice(dish)];
+			return [dish.name, this.getDishPrice(dish), dish.image, dish.description];
 		}, this);
 	}
 
@@ -128,17 +158,16 @@ var DinnerModel = function() {
 	//Returns the total price of the menu (all the ingredients multiplied by number of guests).
 	this.getTotalMenuPrice = function() {
 		//TODO Lab 1
-		var totalPrice = 0;
-		var mapIndex = -1;
+		this.totalPrice = 0;
 		selecteIds.forEach(function(id){
 			// can not find the id
 			if(mapDishesId.indexOf(id) === -1){
 				console.log("Warning");
 				return false;
 			}
-			totatlPrice = this.getDishPrice(this.getDish(id));
+			this.totalPrice += this.getDishPrice(this.getDish(id));
 		}, this);
-		return totalPrice;
+		return this.totalPrice.toFixed(2);
 	}
 
 	//Adds the passed dish to the menu. If the dish of that type already exists on the menu
@@ -182,6 +211,7 @@ var DinnerModel = function() {
 				found = true;
 			}
 		}
+		if(type == "all") return found;
 	  	return dish.type == type && found;
 	  });	
 	}
