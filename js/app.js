@@ -26,8 +26,8 @@ $(function() {
 	var overView = new DinnerOverView($("#iOverView"), model);
 	model.addObserver("overView", overView);
 
-	// var receipeView = new ReceipeView($("iOverView"), model);
-	// model.addObserver("receipeView", receipeView);
+	var receipeView = new ReceipeView($("#iOverView"), model);
+	model.addObserver("receipeView", receipeView);
 
 	// initalize general state controller
 	var stateCtrl = new GeneralStateController(homeView);

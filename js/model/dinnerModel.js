@@ -6,7 +6,7 @@ var DinnerModel = function() {
 	// stateController
 	var pStateCtrl = null;
 	// and selected dishes for the dinner menu
-	var pNumberOfGuests = 0;
+	var pNumberOfGuests = 1;
 	// click image and check dish detail
 	var pDishId = 1;
 
@@ -93,10 +93,10 @@ var DinnerModel = function() {
 	// get current price
 	this.getDishPrice = function(dish) {
 		var totalPrice = 0;
-		var tempNumberOfGuests = pNumberOfGuests;
-		if(tempNumberOfGuests === 0) tempNumberOfGuests = 1;
+		// var tempNumberOfGuests = pNumberOfGuests;
+		// if(tempNumberOfGuests === 0) tempNumberOfGuests = 1;
 		dish.ingredients.forEach(function(ingredient){
-			totalPrice += (tempNumberOfGuests * ingredient.price )
+			totalPrice += (pNumberOfGuests * ingredient.price )
 		})
 		return totalPrice;
 	}

@@ -5,7 +5,7 @@ var ReceipeView = function (pView, pModel) {
 	}
 
 	this.show = function(){
-		pView.innerHTML = `<div class="container-fluid" id="iPrintout"></div>`;
+		pView[0].innerHTML = `<div class="container-fluid" id="iPrintout"></div>`;
 		var printOut = pView.find("#iPrintout");
 		var currentDishes = pModel.getCurrentDishes();
 		if( typeof currentDishes !== "undefined"){

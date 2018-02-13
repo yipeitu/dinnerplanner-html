@@ -1,8 +1,8 @@
 var DinnerOverView = function (pView, pModel) {
 
 	this.ctrlInitialize = function(){
-		var btnCreate = pView.find('#iResultPrintout');
-		btnCreate.on('click', ctrlPrintout.bind(this));
+		var btnCreate = pView.find('#iResultPrintout:not(.bound)');
+		btnCreate.addClass('bound').on('click', ctrlPrintout.bind(this));
 	}
 
 	var ctrlPrintout = function(){
@@ -39,6 +39,7 @@ var DinnerOverView = function (pView, pModel) {
 			            </figure>`);
 			})
 		}
+		this.ctrlInitialize();
 	}
 }
 
