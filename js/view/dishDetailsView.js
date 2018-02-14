@@ -1,9 +1,6 @@
 var DishDetailsView = function (pView, pModel) {
 	
 	var dishImgData = function(dish){
-		// return`<figure class="figure">
-		// 		<img src="images/${dish.image}" class="figure-img img-fluid img-thumbnail m-2">
-		// 		<figcaption class="figure-caption text-center">${dish.description}</figcaption></figure>`;
 		return`<figure class="figure">
 				<div class="figure-img img-fluid img-thumbnail m-2 csImgDetail" style="background-image: url('images/${dish.image}')"></div>
 				<figcaption class="figure-caption text-left">${dish.description}</figcaption></figure>`;
