@@ -10,7 +10,7 @@ var ResultView = function (pView, pModel) {
 	}
 
 	this.update = function(){
-		pView.innerHTML = `<div class="row" id="iStatusView">
+		pView.innerHTML = `<div class="d-flex justify-content-between" id="iStatusView">
 			        
 			    </div>
 			    <hr style="width: 100%; height: 1px; background-color:black;" />

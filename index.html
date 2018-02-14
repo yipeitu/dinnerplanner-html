@@ -15,10 +15,9 @@
   	<header class="navbar flex-column bg-light h1">
 			Dinner Planner
 	</header>
-	<div class="container-fluid">
+	<div class="container">
 		<!-- home view -->
-		<main class="container">
-			<div id="iHome">
+		<div id="iHome">
 				<div class="d-none d-sm-block p-5"></div>
 				<div class="text-center">
 					<p class="mt-5 mb-5 ml-1 mr-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
@@ -27,68 +26,18 @@
 				<div class="text-center">
 					<button id="iCreateNewDinner" class="btn btn-warning btn-lg">Create new dinner</button>
 				</div>
-			</div>
-			<div id="iPage" hidden="true">
-				<div class="row flex-xl-nowrap">
-					<div class="col-12 col-md-3 col-xl-2 py-md-3 bd-sidebar" id="iSideBarView">
-				      	<div class="container align-items-center">
-				      		<div class="row">
-				      			<span class="align-middle text-left h2">My Dinner</span>
-				      		</div>
-							<div class="row" id="iBtnGuest">
-							    <p>People: <span id="numberOfGuests">0</span>
-							    <div class="btn-group">
-							    	<button id="iMinusGuest" class="btn btn-secondary">-</button>
-							    	<button id="iPlusGuest" class="btn btn-secondary">+</button>
-							    </div>
-								</p>
-							</div>
-				      	</div>
-						<nav class="collapse.show text-center">
-							<div class="row bg-light text-dark border" id="iOrderDishes">
-								<div class="col text-left m-1">
-									Dish Name
-								</div>
-								<div class="col text-right m-1">
-									Cost
-								</div>
-							</div>
-							<p class="text-right mt-2" id="iTotalPrice">SEK 0.00</p>
-							<button id="iBtnConfirm" class="btn btn-secondary btn-lg btn-block mt-2">Confirm Dinner</button>
-						</nav>
-					</div>
-				    <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content" id="iMainView">
-				    	<div>
-					    	<section class="text-center mb-5">
-						      <div class="container">
-						        <div class="text-left" style="font-size:2em">FIND A DISH</div>
-						        <div class="row-fluid d-flex align-middle align-items-center">
-						        	<div class="mr-3">
-						      			<label class="sr-only" for="enterKeyWords">EnterKeyWords</label>
-				      					<input type="text" id="iKeyWord" placeholder="Enter key word">
-					      			</div>
-						      		<div class="mr-3">
-									  <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-									    <span id="iBtnDropDown">all</span>
-									  </button>
-									  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="iMenuDropDown">
-									    <a class="dropdown-item" href="#">all</a>
-									  </div>
-									</div>
-									<div class="mr-3">
-					      				<button id="iBtnSearch" class="btn btn-warning btn-md ">search</button>
-					      			</div>
-						        </div>
-						      </div>
-						    </section>
-					      	<div class="container text-center text-lg-left" id="iImageMenu">
-						      		
-					      	</div>
-					     </div>
-				    </main>
+		</div>
+		<div id="iPage" hidden="true">
+			<div class="row flex-xl-nowrap">
+				<div class="col-sm-4 bd-sidebar" id="iSideBarView">
+			      	
 				</div>
+			    <main class="col-sm-8 bd-content" id="iMainView">
+			    	
+			    </main>
 			</div>
-			<div id="iResult" hidden="true">
+		</div>
+		<div id="iResult" hidden="true">
 				<div class="row" id="iStatusView">
 			        
 			    </div>
@@ -96,8 +45,7 @@
 			    <div id="iOverView">
 				    
 				</div>
-			</div>
-		</main>
+		</div>
 		
 	</div>
     <!-- Optional JavaScript -->

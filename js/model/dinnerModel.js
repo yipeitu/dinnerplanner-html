@@ -61,6 +61,8 @@ var DinnerModel = function() {
 					case "dishDetails":
 						pObservers["dishDetailsView"].clear();
 						break;
+					case "receipeView":
+						pObservers["receipeView"].clear();
 					case "overView":
 						pObservers["resultView"].clear();
 						pObservers["statusView"].clear();

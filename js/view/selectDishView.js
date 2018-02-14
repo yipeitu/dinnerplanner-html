@@ -9,8 +9,12 @@ var SelectDishView = function (pView, pModel) {
 
 	var dishTagWithName = function(id, name, img){
 		// could i set the id on <figure>?
+		// return `<figure class="figure">
+		// 			<img src="images/${img}" class="figure-img img-fluid img-thumbnail m-2" id=iDish_${id}>
+		// 			<figcaption class="figure-caption text-center">${name}</figcaption>
+		// 		</figure>`;
 		return `<figure class="figure">
-					<img src="images/${img}" class="figure-img img-fluid img-thumbnail m-2" id=iDish_${id}>
+					<div class="img img-fluid img-thumbnail m-2 csImg" id=iDish_${id} style="background-image: url('images/${img}')"></div>
 					<figcaption class="figure-caption text-center">${name}</figcaption>
 				</figure>`;
 	}
@@ -72,14 +76,14 @@ var SelectDishView = function (pView, pModel) {
 	this.show = function(){
 		pView[0].innerHTML = `<div>
 			    	<section class="text-center mb-5">
-				      <div class="container">
-				        <div class="text-left" style="font-size:2em">FIND A DISH</div>
+				      <div class="container d-none d-sm-block">
+				        <div class="text-left h2">FIND A DISH</div>
 				        <div class="row-fluid d-flex align-middle align-items-center">
-				        	<div class="mr-3">
+				        	<div class="mr-sm-4">
 				      			<label class="sr-only" for="enterKeyWords">EnterKeyWords</label>
 		      					<input type="text" id="iKeyWord" placeholder="Enter key word">
 			      			</div>
-				      		<div class="mr-3">
+				      		<div class="mr-sm-4">
 							  <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 							    <span id="iBtnDropDown">all</span>
 							  </button>
@@ -87,7 +91,7 @@ var SelectDishView = function (pView, pModel) {
 							    <a class="dropdown-item" href="#">all</a>
 							  </div>
 							</div>
-							<div class="mr-3">
+							<div>
 			      				<button id="iBtnSearch" class="btn btn-warning btn-md ">search</button>
 			      			</div>
 				        </div>

@@ -10,30 +10,27 @@ var ReceipeView = function (pView, pModel) {
 		var currentDishes = pModel.getCurrentDishes();
 		if( typeof currentDishes !== "undefined"){
 			currentDishes.forEach(function(dish){
-				printOut.append(`<div class="row">
-          <div class="col-6">
-            <div class="row">
-              <div class="col-auto">
-                <img src="images/${dish[2]}" class="figure-img img-fluid rounded">
+				printOut.append(`
+          <div class="row flex-xl-nowrap justify-content-between">
+            <div class="row flex-xl-nowrap">
+              <div class="d-flex justify-content-center">
+                  <div class="figure-img img-fluid rounded csImgReceipe" style="background-image: url('images/${dish[2]}')"></div>
               </div>
-              <div class="col">
-                <h1>${dish[0]}</h1>
+              <div class="ml-2 d-flex flex-column">
+                <div class="h3">${dish[0]}</div>
                 <p>${dish[3]}</p>
               </div>
             </div>
 
-          </div>
-
-          <div class="col-6">
-            <h3>
-              Preparation
-            </h3>
-            <p>
-              ${dish[3]}
-            </p>
-          </div>
-        </div>
-      </div>`);
+            <div class="ml-3 col-sm-6 flex-column">
+              <div class="h5">
+                Preparation
+              </div>
+              <p>
+                ${dish[3]}
+              </p>
+            </div>
+          </div>`);
 			})
 		}
 	}

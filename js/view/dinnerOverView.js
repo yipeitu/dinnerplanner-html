@@ -14,13 +14,18 @@ var DinnerOverView = function (pView, pModel) {
 	}
 
 	this.show = function(){
-		pView[0].innerHTML = `<div class="col-10" id="iResultImage">
-			            
-			        </div>
-			        <div class="col-2 text-left border-left border-dark">
-			            <p>Total:</p>
-			            <p>${pModel.getTotalMenuPrice() + " SEK"}</p>
-			        </div>
+		pView[0].innerHTML = `
+					<div class="d-flex justify-content-around">
+						<div class="row flex-xl-nowrap justify-content-center" id="iResultImage">
+				            
+				        </div>
+				        <div class="d-flex align-items-center text-left border-left border-dark">
+				            <div class="ml-2">
+					            <div class="h5">Total:</div>
+					            <div class="h5">${pModel.getTotalMenuPrice() + " SEK"}</div class="h5">
+					        </div>
+				        </div>
+				    </div>
 			        <hr style="width: 100%; height: 1px; background-color:black;" />
 
 					<div class="row">
@@ -32,8 +37,8 @@ var DinnerOverView = function (pView, pModel) {
 		var currentDishes = pModel.getCurrentDishes();
 		if( typeof currentDishes !== "undefined"){
 			currentDishes.forEach(function(dish){
-				imageResult.append(`<figure class="figure m-lg-3">
-			              <img src="images/${dish[2]}" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+				imageResult.append(`<figure class="figure m-4 my-xs-2 ml-xs-1">
+						  <div class="figure-img img-fluid rounded csImg" style="background-image: url('images/${dish[2]}')"></div>
 			              <figcaption class="figure-caption text-center">${dish[0]}</figcaption>
 			              <p class="text-right">${dish[1].toFixed(2)+" SEK"}</p>
 			            </figure>`);

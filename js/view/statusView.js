@@ -14,7 +14,7 @@ var StatusView = function (pView, pModel) {
 	}
 
 	this.show = function(){
-		pView[0].innerHTML = ` <div class="col">
+		pView[0].innerHTML = ` <div class="h2">
 			          My Dinner: ${pModel.getNumberOfGuests()} people
 			        </div>
 			        <div class="col text-right">
