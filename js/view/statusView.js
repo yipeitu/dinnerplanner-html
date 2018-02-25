@@ -1,28 +1,23 @@
 var StatusView = function (pView, pModel) {
 
-	this.ctrlInitialize = function(){
-		var btnBack = pView.find('#iResultBackToSearch:not(.bound)');
-		btnBack.addClass('bound').on('click', ctrlBack);
-	}
+	this.btnBack = pView.find('#iResultBackToSearch');
 
-	var ctrlBack = function(event) {
-		pModel.notifyObservers("backToSearch", pView);
-	};
-
-	this.clear = function(){
-		pView.empty();
+	this.update = function(updateCase){
+		if(updateCase == "numberOfGuests"){
+			var numberOfGuests = pView.find("#iNumberOfGuests");
+			numberOfGuests[0].innerHTML = pModel.getNumberOfGuests();
+		}
 	}
 
 	this.show = function(){
-		pView[0].innerHTML = ` <div class="h2">
-			          My Dinner: ${pModel.getNumberOfGuests()} people
-			        </div>
-			        <div class="col text-right">
-			          <button id="iResultBackToSearch" class="btn btn-warning btn-lg btn-array-left">back to search</button>
-			        </div>`;
-		this.ctrlInitialize();
+		pView.show();
 	}
 
+	this.hide = function(){
+		pView.hide();
+	}
+
+	pModel.addObserver(this);
 }
 
 

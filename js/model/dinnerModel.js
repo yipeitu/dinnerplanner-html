@@ -2,7 +2,7 @@
 var DinnerModel = function() {
  
 	// observers
-	var pObservers = Object();
+	var pObservers = [];
 	// stateController
 	var pStateCtrl = null;
 	// and selected dishes for the dinner menu
@@ -17,86 +17,25 @@ var DinnerModel = function() {
 	var selecteIds = [];
 	// record the current menu
 	var unSelectedIds = [];
-	// dish detail id
+	// 
+	var pKeyWord = "";
+	//
+	var pSearchType = "all";
 
-	this.setStateCtrl = function(stateCtrl){
-		pStateCtrl = stateCtrl;
-	}
-
-	this.addObserver = function(obsName, observer) {
+	this.addObserver = function(observer) {
 		// observer is a function from a view
-		pObservers[obsName] = observer;
-		console.log("addObserver:", obsName);
+		pObservers.push(observer);
 	}
 
-	this.notifyObservers = function(obsName, observer) { 
-		console.log(obsName);
-		switch(obsName){
-			case "selectDish":
-				// pStateCtrl.changeState(obsName);
-				pState = obsName;
-				pObservers["homeView"].clear();
-				pObservers["pageView"].show();
-				pObservers["sideBarView"].show();
-				pObservers["selectDishView"].show();
-				break;
-			case "dinnerConfirm":
-				// pStateCtrl.changeState("overView");
-				pState = "overView";
-				pObservers["sideBarView"].clear();
-				pObservers["selectDishView"].clear();
-				pObservers["resultView"].show();
-				pObservers["statusView"].show();
-				pObservers["overView"].show();
-				break;
-			case "dishDetails":
-				// pStateCtrl.changeState("dishDetails");
-				pState = "dishDetails";
-				pObservers["selectDishView"].clear();
-				pObservers["dishDetailsView"].show();
-				break;
-			case "backToSearch":
-				console.log("State:", pState);
-				switch(pState){
-					case "dishDetails":
-						pObservers["dishDetailsView"].clear();
-						break;
-					case "receipeView":
-						pObservers["receipeView"].clear();
-					case "overView":
-						pObservers["resultView"].clear();
-						pObservers["statusView"].clear();
-						pObservers["overView"].clear();
-						break;
-				}
-				// pStateCtrl.changeState("selectDish");
-				pState = "selectDish";
-				pObservers["pageView"].show();
-				pObservers["sideBarView"].show();
-				pObservers["selectDishView"].show();
-				break;
-			case "addToMenu":
-				pObservers["sideBarView"].show();
-				break;
-			case "numberOfGuests":
-				pObservers["sideBarView"].update();
-				if(pState == "dishDetails"){
-					pObservers["dishDetailsView"].show();
-				}
-				break;
-			case "printOut":
-				// pStateCtrl.changeState("receipeView");
-				pState = "receipeView";
-				pObservers["overView"].clear();
-				pObservers["receipeView"].show();
-		}
+	var notifyObservers = function(updateCase){
+		pObservers.forEach(function(observer){
+			observer.update(updateCase);
+		})
 	}
 
 	// get current price
 	this.getDishPrice = function(dish) {
 		var totalPrice = 0;
-		// var tempNumberOfGuests = pNumberOfGuests;
-		// if(tempNumberOfGuests === 0) tempNumberOfGuests = 1;
 		dish.ingredients.forEach(function(ingredient){
 			totalPrice += (pNumberOfGuests * ingredient.price )
 		})
@@ -106,6 +45,7 @@ var DinnerModel = function() {
 	this.setNumberOfGuests = function(num) {
 		if(num <= 0) return;
 		pNumberOfGuests = num;
+		notifyObservers("numberOfGuests");
 	}
 	
 	this.getNumberOfGuests = function() {
@@ -134,9 +74,8 @@ var DinnerModel = function() {
 		});
 	}
 
-
 	//function that returns a dish of specific ID
-	this.getDish = function (id) {
+	var getDish = function (id) {
 	  for(key in dishes){
 			if(dishes[key].id == id) {
 				return dishes[key];
@@ -144,9 +83,13 @@ var DinnerModel = function() {
 		}
 	}
 
+	this.getCurrentDish = function(){
+		return getDish(pDishId);
+	}
+
 	this.getCurrentDishes = function(){
 		return selecteIds.map(function(id){
-			var dish = this.getDish(id);
+			var dish = getDish(id);
 			return [dish.name, this.getDishPrice(dish), dish.image, dish.description];
 		}, this);
 	}
@@ -167,21 +110,22 @@ var DinnerModel = function() {
 				console.log("Warning");
 				return false;
 			}
-			this.totalPrice += this.getDishPrice(this.getDish(id));
+			this.totalPrice += this.getDishPrice(getDish(id));
 		}, this);
 		return this.totalPrice.toFixed(2);
 	}
 
 	//Adds the passed dish to the menu. If the dish of that type already exists on the menu
 	//it is removed from the menu and the new one added.
-	this.addDishToMenu = function(id) {
+	this.addDishToMenu = function() {
 		//TODO Lab 1 
-		var index = selecteIds.indexOf(id);
+		var index = selecteIds.indexOf(pDishId);
 		// add to the customer menu
-		if(index === -1) selecteIds.push(id);
-		index = unSelectedIds.indexOf(id);
+		if(index === -1) selecteIds.push(pDishId);
+		index = unSelectedIds.indexOf(pDishId);
 		// remove from the main menu
 		if(index !== -1) selecteIds.splice(index, 1);
+		notifyObservers("addDishToMenu");
 	}
 
 	//Removes dish from menu
@@ -193,29 +137,6 @@ var DinnerModel = function() {
 		index = unSelectedIds.indexOf(id);
 		// remove from the main menu
 		if(index === -1) unSelecteIds.push(index);
-	}
-
-	//function that returns all dishes of specific type (i.e. "starter", "main dish" or "dessert")
-	//you can use the filter argument to filter out the dish by name or ingredient (use for search)
-	//if you don't pass any filter all the dishes will be returned
-	this.getAllDishes = function (type, filter) {
-	  return dishes.filter(function(dish) {
-		var found = true;
-		if(filter){
-			found = false;
-			dish.ingredients.forEach(function(ingredient) {
-				if(ingredient.name.indexOf(filter)!=-1) {
-					found = true;
-				}
-			});
-			if(dish.name.indexOf(filter) != -1)
-			{
-				found = true;
-			}
-		}
-		if(type == "all") return found;
-	  	return dish.type == type && found;
-	  });	
 	}
 
 	//get all types of dishes
@@ -230,14 +151,48 @@ var DinnerModel = function() {
 	// set dish id for dishDetailView, pass from selectDishView
 	this.setDishId = function(dishId){
 		if(mapDishesId.indexOf(parseInt(dishId)) === -1){
-			return false;
+			return;
 		}
-		pDishId = dishId;
-		return true;
+		pDishId = parseInt(dishId);
+		notifyObservers("setDish");
+		return;
 	}
 
-	this.getDishId = function(){
-		return pDishId;
+	this.setSearchType = function(searchType){
+		pSearchType = searchType;
+		notifyObservers("searchType");
+		return;
+	}
+
+	this.getSearchType = function(){
+		return pSearchType;
+	}
+
+	this.setSearch = function(keyWord, searchType){
+		pKeyWord = keyWord;
+		pSearchType = searchType;
+		notifyObservers("search");
+		return;
+	}
+
+	this.getFilterDishes = function(){
+		return dishes.filter(function(dish) {
+		var found = true;
+		if(pKeyWord){
+			found = false;
+			dish.ingredients.forEach(function(ingredient) {
+				if(ingredient.name.indexOf(pKeyWord)!=-1) {
+					found = true;
+				}
+			});
+			if(dish.name.indexOf(pKeyWord) != -1)
+			{
+				found = true;
+			}
+		}
+		if(pSearchType == "all") return found;
+	  	return dish.type == pSearchType && found;
+	  });
 	}
 	// the dishes variable contains an array of all the 
 	// dishes in the database. each dish has id, name, type,
