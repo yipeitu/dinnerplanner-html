@@ -11,7 +11,7 @@ var ReceipeView = function (pView, pModel) {
             <div class="row flex-xl-nowrap justify-content-between">
               <div class="row flex-xl-nowrap">
                 <div class="d-flex justify-content-center">
-                    <div class="figure-img img-fluid rounded csImgReceipe" style="background-image: url('images/${dish[2]}')"></div>
+                    <div class="figure-img img-fluid rounded csImgReceipe" style="background-image: url('${dish[2]}')"></div>
                 </div>
                 <div class="ml-2 d-flex flex-column">
                   <div class="h3">${dish[0]}</div>

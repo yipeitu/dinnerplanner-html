@@ -4,11 +4,13 @@ var DishDetailsView = function (pView, pModel) {
 	
 	this.btnAdd = pView.find('#iAddToMenu');
 
-	this.dish = pModel.getCurrentDish();
+	// this.dish = pModel.getCurrentDish();
+
+	this.loading = pView.find("#loadingDetails");
 
 	var dishImgData = function(dish){
 		return`<figure class="figure">
-				<div class="figure-img img-fluid img-thumbnail m-2 csImgDetail" style="background-image: url('images/${dish.image}')"></div>
+				<div class="figure-img img-fluid img-thumbnail m-2 csImgDetail" style="background-image: url('${dish.image}')"></div>
 				<figcaption class="figure-caption text-left">${dish.description}</figcaption></figure>`;
 	}
 
@@ -30,15 +32,32 @@ var DishDetailsView = function (pView, pModel) {
 		numberOfGuestsView[0].innerHTML = "INGREDIENTS FOR "+ pModel.getNumberOfGuests() + " PEOPLE";
 	}
 
+	this.callback = function(data, dishId){
+		pModel.dishDetailUpdate(data[0], dishId);
+	}
+
+	this.error = function(error){
+		console.log(error);
+	}
+
 	this.update = function(updateCase){
-		if(updateCase == "numberOfGuests"){
+		if(updateCase == "numberOfGuests" || updateCase == "dishDetailUpdate"){
 			var ingredientTable = pView.find("#iIngredientTable");
 			ingredientTable.empty();
 			var numberOfGuests = pModel.getNumberOfGuests();
 			numberOfGuestsUpdate();
 			
+			var dish = pModel.getCurrentDish(this.callback, this.error);
 			var pTotalPrice = 0;
-			this.dish.ingredients.forEach(function(ingredient){
+			if(dish.ingredients.length !== 0){
+				this.loading.hide();
+				ingredientTable.show();
+			} else {
+				this.loading.show();
+				ingredientTable.hide();
+				return;
+			}
+			dish.ingredients.forEach(function(ingredient){
 				pTotalPrice += (numberOfGuests * ingredient.price);
 				ingredientTable.append(ingredientView(numberOfGuests, ingredient.quantity,
 				ingredient.unit, ingredient.name, ingredient.price))
@@ -52,10 +71,10 @@ var DishDetailsView = function (pView, pModel) {
 	this.show = function(){
 		var dishView = pView.find("#iDishName");
 		var dishImg = pView.find("#iDishImg");
-		this.dish = pModel.getCurrentDish();
+		var dish = pModel.getCurrentDish(this.callback, this.error);
 
-		dishView[0].innerHTML = this.dish.name;
-		dishImg[0].innerHTML = dishImgData(this.dish);
+		dishView[0].innerHTML = dish.name;
+		dishImg[0].innerHTML = dishImgData(dish);
 
 		this.update("numberOfGuests");
 		pView.show();

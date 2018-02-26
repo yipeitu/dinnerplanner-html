@@ -11,7 +11,7 @@ var SideBarView = function (pView, pModel) {
 	var orderView = function(dishName, totalPrice){
 	return `<div class="d-flex">
 			<div class="col-xs-3 mr-auto p-2">
-				${dishName}
+				${dishName == "Dish Name"? dishName:dishName.slice(0, 23)+"..."}
 			</div>
 			<div class="col-xs-3 ml-auto p-2">
 				${totalPrice}

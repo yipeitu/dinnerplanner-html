@@ -10,8 +10,8 @@ var DinnerOverView = function (pView, pModel) {
 			if( typeof currentDishes !== "undefined"){
 				currentDishes.forEach(function(dish){
 					imageResult.append(`<figure class="figure m-4 my-xs-2 ml-xs-1">
-							  <div class="figure-img img-fluid rounded csImg" style="background-image: url('images/${dish[2]}')"></div>
-				              <figcaption class="figure-caption text-center">${dish[0]}</figcaption>
+							  <div class="figure-img img-fluid rounded csImg" style="background-image: url('${dish[2]}')"></div>
+				              <figcaption class="figure-caption text-center">${dish[0].slice(0, 23)+"..."}</figcaption>
 				              <p class="text-right">${dish[1].toFixed(2)+" SEK"}</p>
 				            </figure>`);
 				})

@@ -18,14 +18,14 @@
 	<div class="container">
 		<!-- home view -->
 		<div id="iHome">
-				<div class="d-none d-sm-block p-5"></div>
-				<div class="text-center">
-					<p class="mt-5 mb-5 ml-1 mr-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-				</div>
-				<div class="d-none d-sm-block p-5"></div>
-				<div class="text-center">
-					<button id="iCreateNewDinner" class="btn btn-warning btn-lg">Create new dinner</button>
-				</div>
+			<div class="d-none d-sm-block p-5"></div>
+			<div class="text-center">
+				<p class="mt-5 mb-5 ml-1 mr-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+			</div>
+			<div class="d-none d-sm-block p-5"></div>
+			<div class="text-center">
+				<button id="iCreateNewDinner" class="btn btn-warning btn-lg">Create new dinner</button>
+			</div>
 		</div>
 		<div>
 			<div class="row flex-xl-nowrap">
@@ -89,7 +89,9 @@
 					        </div>
 					      </div>
 					    </section>
-				      	<div class="container text-center text-lg-left" id="iImageMenu">
+				      	<div class="container text-center text-lg-left" id="iImageMenu" style="display: none">
+				      	</div>
+				      	<div class="container text-center loader" id="loadingReceipe">
 				      	</div>
 			     	</div>
 			    </main>
@@ -112,7 +114,8 @@
 			     			INGREDIENTS FOR 1 PERSON
 			     		</div>
 			     		<hr style="width: 100%; height: 1px; background-color:black;" />
-			     		<div id="iIngredientTable">
+			     		<div class="container text-center loader" id="loadingDetails"></div>
+			     		<div id="iIngredientTable" style="display: none">
 			     		</div>
 			     		<hr style="width: 100%; height: 1px; background-color:black;" />
 			     		<div class="d-flex justify-content-around align-items-center">
@@ -170,7 +173,7 @@
 	</div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
