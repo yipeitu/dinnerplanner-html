@@ -67,24 +67,29 @@ var DishDetailsView = function (pView, pModel) {
 			var dish = pModel.getCurrentDish(this.callback, this.error);
 			var pTotalPrice = 0;
 			if(dish.ingredients.length !== 0){
-				this.loading.hide();
-				ingredientTable.show();
-			} else {
-				this.loading.show();
-				ingredientTable.hide();
-				return;
-			}
-			dish.ingredients.forEach(function(ingredient){
+				pView.find("#loadingDetails").hide();
+				dish.ingredients.forEach(function(ingredient){
 				pTotalPrice += (numberOfGuests * ingredient.price);
 				ingredientTable.append(ingredientView(numberOfGuests, ingredient.quantity,
 				ingredient.unit, ingredient.name, ingredient.price))
-			})
+				})
 
-			var ingredientsPrice = pView.find("#iIngredientsPrice");
-			ingredientsPrice.html(pTotalPrice.toFixed(2));
+				var ingredientsPrice = pView.find("#iIngredientsPrice");
+				ingredientsPrice.html(pTotalPrice.toFixed(2));
+				
+				var description = pView.find("#description");
+				description.html(dish.description);
 
-			var description = pView.find("#description");
-			description.html(dish.description);
+				pView.find("#loadingDetails").hide();
+				pView.find("#description").hide();
+				ingredientTable.show();
+			} else {
+				pView.find("#loadingDetails").show();
+				pView.find("#description").show();
+				ingredientTable.hide();
+				return;
+			}
+
 		}
 	}
 
