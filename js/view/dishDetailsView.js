@@ -66,7 +66,7 @@ var DishDetailsView = function (pView, pModel) {
 			
 			var dish = pModel.getCurrentDish(this.callback, this.error);
 			var pTotalPrice = 0;
-			if(dish.ingredients.length !== 0){
+			if(dish.ingredients.length != 0 || dish.description != 0){
 				pView.find("#loadingDetails").hide();
 				dish.ingredients.forEach(function(ingredient){
 				pTotalPrice += (numberOfGuests * ingredient.price);
@@ -81,11 +81,9 @@ var DishDetailsView = function (pView, pModel) {
 				description.html(dish.description);
 
 				pView.find("#loadingDetails").hide();
-				pView.find("#description").hide();
 				ingredientTable.show();
 			} else {
 				pView.find("#loadingDetails").show();
-				pView.find("#description").show();
 				ingredientTable.hide();
 				return;
 			}
