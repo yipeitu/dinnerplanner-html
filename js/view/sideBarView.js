@@ -11,7 +11,7 @@ var SideBarView = function (pView, pModel) {
 	var orderView = function(dishName, totalPrice, id=""){
 	return `<div class="d-flex" id=${id}>
 			<div class="col-xs-3 mr-auto p-2">
-				${dishName == "Dish Name"? dishName:dishName.slice(0, 20)+"..."}
+				${dishName == "Dish Name"? dishName:dishName.slice(0, 18)+"..."}
 			</div>
 			<div class="col-xs-3 ml-auto p-2">
 				${totalPrice}
@@ -42,7 +42,7 @@ var SideBarView = function (pView, pModel) {
 			numberOfGuests.html(pModel.getNumberOfGuests());
 			ordersUpdate();
 		}
-		else if(["addToMenu", "removeDishFromMenu"].indexOf(updateCase)){
+		else if(["addDishToMenu", "removeDishFromMenu"].indexOf(updateCase)){
 			ordersUpdate();
 		}
 	}

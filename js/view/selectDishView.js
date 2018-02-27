@@ -19,7 +19,7 @@ var SelectDishView = function (pView, pModel) {
 	var dishTagWithName = function(id, name, img){
 		return `<figure class="figure">
 					<div class="img img-fluid img-thumbnail m-2 csImg" id=iDish_${id} style="background-image: url('${img}')"></div>
-					<figcaption class="figure-caption text-center">${name.slice(0, 20)+"..."}</figcaption>
+					<figcaption class="figure-caption text-center">${name.slice(0, 18)+"..."}</figcaption>
 				</figure>`;
 	}
 
