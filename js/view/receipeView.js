@@ -1,7 +1,7 @@
 var ReceipeView = function (pView, pModel) {
 
   this.update = function(updateCase){
-    if(updateCase == "numberOfGuests" || updateCase == "addToMenu"){
+    if(["numberOfGuests", "addToMenu", "removeDishFromMenu"].indexOf(updateCase) !== -1){
       var printOut = pView.find("#iPrintout");
       printOut.empty();
       var currentDishes = pModel.getCurrentDishes();

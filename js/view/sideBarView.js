@@ -8,10 +8,10 @@ var SideBarView = function (pView, pModel) {
 
 	this.orderDishes = pView.find("#iOrderDishes");
 
-	var orderView = function(dishName, totalPrice){
-	return `<div class="d-flex">
+	var orderView = function(dishName, totalPrice, id=""){
+	return `<div class="d-flex" id=${id}>
 			<div class="col-xs-3 mr-auto p-2">
-				${dishName == "Dish Name"? dishName:dishName.slice(0, 23)+"..."}
+				${dishName == "Dish Name"? dishName:dishName.slice(0, 20)+"..."}
 			</div>
 			<div class="col-xs-3 ml-auto p-2">
 				${totalPrice}
@@ -27,7 +27,7 @@ var SideBarView = function (pView, pModel) {
 		// btnConfirm.addAttr("disabled");
 		if( typeof currentDishes !== "undefined"){
 			currentDishes.forEach(function(dish){
-				orderDishes.append(orderView(dish[0], dish[1].toFixed(2)));
+				orderDishes.append(orderView(dish[0], dish[1].toFixed(2), "order_"+dish[4]));
 			})
 		}
 		var iTotalPrice = pView.find("#iTotalPrice");
@@ -42,7 +42,7 @@ var SideBarView = function (pView, pModel) {
 			numberOfGuests.html(pModel.getNumberOfGuests());
 			ordersUpdate();
 		}
-		else if(updateCase == "addDishToMenu"){
+		else if(["addToMenu", "removeDishFromMenu"].indexOf(updateCase)){
 			ordersUpdate();
 		}
 	}

@@ -26,11 +26,13 @@ var DinnerModel = function() {
 
 	var pAPIkey = "Qu9grxVNWpmshA4Kl9pTwyiJxVGUp1lKzrZjsnghQMkFkfA4LB";
 	// get receipes
-	var pURLReceipes = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?number=10&type=%type&query=%filter";
+	var pURLReceipes = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?number=7&type=%type&query=%filter";
 
 	var pURLRecepieDetails = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/informationBulk?ids=%id&includeNutrition=false"
 
 	var pDishes = [];
+
+	var pMissImgId = [110669, 146557, 698704, 609572];
 
 	this.addObserver = function(observer) {
 		// observer is a function from a view
@@ -114,7 +116,7 @@ var DinnerModel = function() {
 	this.getCurrentDishes = function(){
 		return selecteIds.map(function(id){
 			var dish = getDish(id);
-			return [dish.name, this.getDishPrice(dish), dish.image, dish.description];
+			return [dish.name, this.getDishPrice(dish), dish.image, dish.description, dish.id];
 		}, this);
 	}
 
@@ -155,18 +157,20 @@ var DinnerModel = function() {
 	//Removes dish from menu
 	this.removeDishFromMenu = function(id) {
 		//TODO Lab 1
+		console.log("remove: ", id, selecteIds);
 		var index = selecteIds.indexOf(id);
 		// add to the customer menu
 		if(index !== -1) selecteIds.splice(index, 1);
-		index = unSelectedIds.indexOf(id);
+		// index = unSelectedIds.indexOf(id);
 		// remove from the main menu
-		if(index === -1) unSelecteIds.push(index);
+		// if(index === -1) unSelecteIds.push(index);
+		notifyObservers("removeDishFromMenu");
 	}
 
 
 	this.dishesUpdate = function(dishes, dishType){
 		dishes.results.forEach(function(dish){
-			if(mapDishesId.indexOf(dish.id) === -1){
+			if(mapDishesId.indexOf(dish.id) === -1 && pMissImgId.indexOf(dish.id) === -1){
 				pDishes.push({
 					"id": dish.id,
 					"name": dish.title,

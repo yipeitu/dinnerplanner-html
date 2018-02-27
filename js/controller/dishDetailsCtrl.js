@@ -8,4 +8,5 @@ var DishDetailsCtrl = function (pView, pModel, pCtrl) {
 		// add current dish to menu
 		pModel.addDishToMenu();
 	})
+
 }

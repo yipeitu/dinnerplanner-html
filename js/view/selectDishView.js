@@ -19,7 +19,7 @@ var SelectDishView = function (pView, pModel) {
 	var dishTagWithName = function(id, name, img){
 		return `<figure class="figure">
 					<div class="img img-fluid img-thumbnail m-2 csImg" id=iDish_${id} style="background-image: url('${img}')"></div>
-					<figcaption class="figure-caption text-center">${name.slice(0, 23)+"..."}</figcaption>
+					<figcaption class="figure-caption text-center">${name.slice(0, 20)+"..."}</figcaption>
 				</figure>`;
 	}
 
@@ -34,7 +34,8 @@ var SelectDishView = function (pView, pModel) {
 	}
 
 	this.error = function(error){
-		console.log(error);
+		pView.find("#loadingReceipe").hide();
+		pView.find("#errorReceipe").show();
 	}
 
 	this.update = function(updateCase){
@@ -69,8 +70,8 @@ var SelectDishView = function (pView, pModel) {
 			dropDownMenu.append(dropDownType(typeName));
 			if(typeName != "all") pModel.getAllDishes(typeName, "", this.callback, this.error);
 		}, this);
-		// get all dishes
-		// appendDishImage(this.imageMenu, pModel.getFullMenu(this.callback, this.error));
+		pView.find("#loadingReceipe").show();
+		pView.find("#errorReceipe").hide();
 		pView.show();
 	}
 

@@ -3,7 +3,7 @@ var DinnerOverView = function (pView, pModel) {
 	this.btnPrint = pView.find('#iResultPrintout');
 
 	this.update = function(updateCase){
-		if(updateCase == "numberOfGuests" || updateCase == "addDishToMenu"){
+		if(["numberOfGuests", "addToMenu", "removeDishFromMenu"].indexOf(updateCase)){
 			var imageResult = pView.find("#iResultImage");
 			imageResult.empty();
 			var currentDishes = pModel.getCurrentDishes();
@@ -11,7 +11,7 @@ var DinnerOverView = function (pView, pModel) {
 				currentDishes.forEach(function(dish){
 					imageResult.append(`<figure class="figure m-4 my-xs-2 ml-xs-1">
 							  <div class="figure-img img-fluid rounded csImg" style="background-image: url('${dish[2]}')"></div>
-				              <figcaption class="figure-caption text-center">${dish[0].slice(0, 23)+"..."}</figcaption>
+				              <figcaption class="figure-caption text-center">${dish[0].slice(0, 20)+"..."}</figcaption>
 				              <p class="text-right">${dish[1].toFixed(2)+" SEK"}</p>
 				            </figure>`);
 				})

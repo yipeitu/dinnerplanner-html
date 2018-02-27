@@ -39,4 +39,9 @@ var SideBarCtrl = function (pView, pModel, pCtrl) {
 			pView.btnConfirm.addClass("d-none");
 		}
 	})
+
+	// remove ordered dishes
+	pView.orderDishes.on("click", function(event){
+		pModel.removeDishFromMenu(parseInt(event.target.parentNode.id.split("_")[1]));
+	})
 }
