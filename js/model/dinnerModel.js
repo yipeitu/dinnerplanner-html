@@ -157,7 +157,6 @@ var DinnerModel = function() {
 	//Removes dish from menu
 	this.removeDishFromMenu = function(id) {
 		//TODO Lab 1
-		console.log("remove: ", id, selecteIds);
 		var index = selecteIds.indexOf(id);
 		// add to the customer menu
 		if(index !== -1) selecteIds.splice(index, 1);

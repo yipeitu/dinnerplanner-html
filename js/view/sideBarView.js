@@ -42,7 +42,8 @@ var SideBarView = function (pView, pModel) {
 			numberOfGuests.html(pModel.getNumberOfGuests());
 			ordersUpdate();
 		}
-		else if(["addDishToMenu", "removeDishFromMenu"].indexOf(updateCase)){
+		// if(updateCase == "addDishToMenu" || updateCase == "removeDishFromMenu"){
+		if(["addDishToMenu", "removeDishFromMenu"].indexOf(updateCase) != -1){
 			ordersUpdate();
 		}
 	}

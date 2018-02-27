@@ -3,7 +3,7 @@ var DinnerOverView = function (pView, pModel) {
 	this.btnPrint = pView.find('#iResultPrintout');
 
 	this.update = function(updateCase){
-		if(["numberOfGuests", "addDishToMenu", "removeDishFromMenu"].indexOf(updateCase)){
+		if(["numberOfGuests", "addDishToMenu", "removeDishFromMenu"].indexOf(updateCase) != -1){
 			var imageResult = pView.find("#iResultImage");
 			imageResult.empty();
 			var currentDishes = pModel.getCurrentDishes();
